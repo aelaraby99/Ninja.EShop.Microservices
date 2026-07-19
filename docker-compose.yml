@@ -1,6 +1,14 @@
 services:
+  ninja.eshop.catalog.api:
+    image: ${DOCKER_REGISTRY-}ninjaeshopcatalogapi
+    build:
+      context: src
+      dockerfile: NINJA.EShop.Catalog/NINJA.EShop.Catalog.API/Dockerfile
+    depends_on:
+      - ninja.eshop.catalog.Db
+
   ninja.eshop.catalog.Db:
-    image: postgres
+    image: postgres:16
     restart: always
 
 volumes:

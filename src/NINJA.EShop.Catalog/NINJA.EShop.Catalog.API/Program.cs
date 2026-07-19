@@ -1,6 +1,6 @@
 using JasperFx;
 using Microsoft.AspNetCore.RateLimiting;
-using Ninja.EShop.Catalog.API.Products.CreateProduct;
+using NINJA.EShop.Catalog.API.Products.CreateProduct;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCarter(configurator: cfg =>

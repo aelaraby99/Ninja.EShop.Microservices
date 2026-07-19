@@ -1,4 +1,4 @@
-﻿namespace Ninja.EShop.Catalog.API.Data
+﻿namespace NINJA.EShop.Catalog.API.Data
 {
     public class CatalogInitialData
     {

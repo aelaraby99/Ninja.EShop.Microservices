@@ -1,4 +1,4 @@
-﻿namespace Ninja.EShop.Catalog.API.Models
+﻿namespace NINJA.EShop.Catalog.API.Models
 {
     public class Product
     {

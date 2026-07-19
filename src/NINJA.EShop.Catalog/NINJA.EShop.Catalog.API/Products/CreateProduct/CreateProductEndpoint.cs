@@ -1,4 +1,4 @@
-﻿namespace Ninja.EShop.Catalog.API.Products.CreateProduct;
+﻿namespace NINJA.EShop.Catalog.API.Products.CreateProduct;
 
 public record CreateProductRequest(string Name,List<string> Category,string Description,string ImageFile,decimal Price);
 

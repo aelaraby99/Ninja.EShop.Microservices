@@ -1,4 +1,12 @@
 services:
+  ninja.eshop.catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__MartenDb=Server=ninja.eshop.catalog.Db;Port=5432;Database=NinjaEShopCatalogDb;Username=postgres;Password=postgres;Include Error Detail=true
+    ports:
+      - "8080:8080"
+
   ninja.eshop.catalog.Db:
     container_name: ninja.eshop.catalog.Db
     environment:

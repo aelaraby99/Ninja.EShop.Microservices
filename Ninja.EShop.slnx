@@ -2,7 +2,11 @@
   <Folder Name="/src/NINJA.EShop.Shared/">
     <Project Path="src/NINJA.EShop.Shared/NINJA.EShop.Shared/NINJA.EShop.Shared.csproj" Id="f8237c26-1a83-46e3-be25-2727842bd530" />
   </Folder>
+  <Folder Name="/src/" />
   <Folder Name="/src/NINJA.EShop.Catalog/">
-    <Project Path="src/NINJA.EShop.Catalog/NINJA.EShop.Catalog.API/NINJA.EShop.Catalog.API.csproj" Id="445037b4-1331-4e96-8e9a-e363d547e0aa" DisplayName="NINJA.EShop.Catalog.API" />
+    <Project Path="src/NINJA.EShop.Catalog/NINJA.EShop.Catalog.API/NINJA.EShop.Catalog.API.csproj" Id="445037b4-1331-4e96-8e9a-e363d547e0aa" />
   </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

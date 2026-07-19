@@ -1,0 +1,7 @@
+services:
+  ninja.eshop.catalog.Db:
+    image: postgres
+    restart: always
+
+volumes:
+  postgres_catalog:

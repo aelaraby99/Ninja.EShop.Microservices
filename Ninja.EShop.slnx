@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/NINJA.EShop.Catalog/">
+    <Project Path="src/Ninja.EShop.Catalog/Ninja.EShop.Catalog.API/Ninja.EShop.Catalog.API.csproj" Id="445037b4-1331-4e96-8e9a-e363d547e0aa" />
+  </Folder>
+</Solution>

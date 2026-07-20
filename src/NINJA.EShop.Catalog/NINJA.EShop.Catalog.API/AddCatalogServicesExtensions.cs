@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Catalog.API.Products;
 using NINJA.EShop.Shared.Behaviors;
+using NINJA.EShop.Shared.Exceptions.Handler;
 namespace NINJA.EShop.Catalog.API
 {
     public static class AddCatalogServicesExtensions
@@ -13,6 +14,7 @@ namespace NINJA.EShop.Catalog.API
             {
                 cfg.RegisterServicesFromAssembly(programAssembly);
                 cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
             builder.Services.AddValidatorsFromAssembly(programAssembly);
             builder.Services.AddCarter(configurator: cfg =>
@@ -42,6 +44,7 @@ namespace NINJA.EShop.Catalog.API
             });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddExceptionHandler<CustomExceptionHandler>();
             return builder;
         }
         public static WebApplication AddCatalogServices(this WebApplication app)
@@ -54,6 +57,9 @@ namespace NINJA.EShop.Catalog.API
             app.UseHttpsRedirection();
             app.UseRateLimiter();
             app.MapCarter();
+            app.UseExceptionHandler(options =>
+            {
+            });
             return app;
         }
     }

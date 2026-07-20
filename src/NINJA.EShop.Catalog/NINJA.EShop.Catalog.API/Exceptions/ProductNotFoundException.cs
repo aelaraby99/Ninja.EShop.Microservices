@@ -1,8 +1,9 @@
-﻿namespace NINJA.EShop.Catalog.API.Exceptions
+﻿using NINJA.EShop.Shared.Exceptions;
+namespace NINJA.EShop.Catalog.API.Exceptions
 {
-    public class ProductNotFoundException: Exception
+    public class ProductNotFoundException: NotFoundException
     {
-        public ProductNotFoundException() : base("Product not found.")
+        public ProductNotFoundException(Guid Id) : base("Product",Id)
         {
         }
     }

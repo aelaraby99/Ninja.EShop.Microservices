@@ -1,11 +1,10 @@
-using JasperFx;
 using Microsoft.AspNetCore.RateLimiting;
-using NINJA.EShop.Catalog.API.Products.CreateProduct;
+using NINJA.EShop.Catalog.API.Products;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCarter(configurator: cfg =>
 {
-    cfg.WithModule<CreateProductEndpoint>();
+    cfg.WithModule<ProductEndpoints>();
 });
 builder.Services.AddMarten(options =>
 {

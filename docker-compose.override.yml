@@ -18,6 +18,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_catalog:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -28,7 +29,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "5050:80"
+      - "5055:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 volumes:

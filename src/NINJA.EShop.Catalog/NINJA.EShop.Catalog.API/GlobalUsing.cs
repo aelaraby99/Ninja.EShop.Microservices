@@ -5,3 +5,4 @@ global using Marten;
 global using NINJA.EShop.Catalog.API.Models;
 global using NINJA.EShop.Shared.CQRS;
 global using NINJA.EShop.Catalog.API.Exceptions;
+global using FluentValidation;

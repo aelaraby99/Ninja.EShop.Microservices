@@ -1,12 +1,19 @@
 ﻿using NINJA.EShop.Catalog.API.Products.CreateProduct;
+using NINJA.EShop.Catalog.API.Products.DeleteProduct;
+using NINJA.EShop.Catalog.API.Products.GetProductByCategory;
 using NINJA.EShop.Catalog.API.Products.GetProductById;
 using NINJA.EShop.Catalog.API.Products.GetProducts;
+using NINJA.EShop.Catalog.API.Products.UpdateProduct;
 namespace NINJA.EShop.Catalog.API.Products
 {
     public record GetProductsResponse(IEnumerable<Product> Products);
     public record CreateProductRequest(string Name,List<string> Category,string Description,string ImageFile,decimal Price);
+    public record UpdateProductRequest(Guid Id,string Name,List<string> Category,string Description,string ImageFile,decimal Price);
+    public record UpdateProductResponse(bool IsSuccess);
+    public record DeleteProductResponse(bool IsSuccess);
     public record CreateProductResponse(Guid Id);
     public record GetProductByIdResponse(Product Product);
+    public record GetProductByCategoryResponse(IEnumerable<Product> Products);
     public class ProductEndpoints: ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -51,6 +58,44 @@ namespace NINJA.EShop.Catalog.API.Products
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Retrieves a product by ID")
             .WithDescription("Retrieves the details of a product by its unique identifier.");
+
+            app.MapGet("/products/category/{category}",async (string category,ISender sender) =>
+            {
+                var result = await sender.Send(new GetProductByCategoryQuery(category));
+                var response = result.Adapt<GetProductByCategoryResponse>();
+                return Results.Ok(response);
+            }).RequireRateLimiting("default")
+            .WithTags("Products")
+            .Produces<GetProductByCategoryResponse>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Retrieves products by category")
+            .WithDescription("Retrieves a list of products that belong to the specified category.");
+
+            app.MapPut("/products",async (UpdateProductRequest request,ISender sender) =>
+            {
+                var command = request.Adapt<UpdateProductCommand>();
+                var result = await sender.Send(command);
+                var response = result.Adapt<UpdateProductResponse>();
+                return Results.Ok(response);
+            }).RequireRateLimiting("default")
+            .WithTags("Products")
+            .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Updates an existing product")
+            .WithDescription("Updates the details of an existing product with the specified information.");
+
+            app.MapDelete("/products/{id:guid}",async (Guid id,ISender sender) =>
+            {
+                var result = await sender.Send(new DeleteProductCommand(id));
+                var response = result.Adapt<DeleteProductResponse>();
+                return Results.Ok(response);
+            }).RequireRateLimiting("default")
+            .WithTags("Products")
+            .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Delete a product by ID")
+            .WithDescription("Delete the details of a product by its unique identifier.");
         }
     }
 }

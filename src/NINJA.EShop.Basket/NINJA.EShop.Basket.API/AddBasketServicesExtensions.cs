@@ -26,6 +26,7 @@ namespace NINJA.EShop.Basket.API
                 cfg.WithModule<BasketEndpoints>();
             });
             var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
+            var redisDbConStr = builder.Configuration.GetConnectionString("Redis")!;
             builder.Services.AddMarten(options =>
             {
                 options.Connection(martenDbConStr);
@@ -56,10 +57,12 @@ namespace NINJA.EShop.Basket.API
             builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
             builder.Services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
+                options.Configuration = redisDbConStr;
             });
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-            builder.Services.AddHealthChecks().AddNpgSql(martenDbConStr);
+            builder.Services.AddHealthChecks()
+                .AddRedis(redisDbConStr,name: "Redis")
+                .AddNpgSql(martenDbConStr,name:"Postgres");
             return builder;
         }
         public static WebApplication AddBasketPipelines(this WebApplication app)

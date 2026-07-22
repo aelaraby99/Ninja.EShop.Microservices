@@ -19,6 +19,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__MartenDb=Server=ninja.eshop.basket.Db;Port=5432;Database=NinjaEShopBasketDb;Username=postgres;Password=postgres;Include Error Detail=true
+      - ConnectionStrings__Redis=ninja.eshop.distibutedCache:6379
     ports:
       - "6001:8080"
       - "6061:8081"
@@ -69,7 +70,19 @@ services:
       - "5055:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    restart: always
+    depends_on:
+      - ninja.eshop.distibutedCache
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight_data:/data
 volumes:
   postgres_catalog:
   postgres_basket:
   pgadmin_data:
+  redisinsight_data:

@@ -24,7 +24,7 @@ services:
     restart: always
 
   ninja.eshop.distibutedCache:
-    image: redis
+    image: redis:8.8
     restart: always
 
 volumes:

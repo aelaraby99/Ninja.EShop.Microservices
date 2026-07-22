@@ -9,6 +9,9 @@ services:
     ports:
       - "6000:8080"
       - "6060:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro
     depends_on:
       - ninja.eshop.catalog.Db
      
@@ -25,6 +28,10 @@ services:
       - "6061:8081"
     depends_on:
       - ninja.eshop.basket.Db
+      - ninja.eshop.distibutedCache   
+    volumes:
+    - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+    - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro
 
   ninja.eshop.catalog.Db:
     container_name: ninja.eshop.catalog.Db

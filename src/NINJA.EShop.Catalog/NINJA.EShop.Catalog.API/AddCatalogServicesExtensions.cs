@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
+﻿using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Catalog.API.Data;
 using NINJA.EShop.Catalog.API.Products;
 using NINJA.EShop.Shared.Behaviors;
@@ -22,9 +24,10 @@ namespace NINJA.EShop.Catalog.API
             {
                 cfg.WithModule<ProductEndpoints>();
             });
+            var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
             builder.Services.AddMarten(options =>
             {
-                options.Connection(builder.Configuration.GetConnectionString("MartenDb")!);
+                options.Connection(martenDbConStr);
             }).UseLightweightSessions();
             builder.Services.AddRateLimiter(options =>
             {
@@ -50,6 +53,7 @@ namespace NINJA.EShop.Catalog.API
                 builder.Services.AddSwaggerGen();
             }
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+            builder.Services.AddHealthChecks().AddNpgSql(martenDbConStr);
             return builder;
         }
         public static WebApplication AddCatalogServices(this WebApplication app)
@@ -63,6 +67,11 @@ namespace NINJA.EShop.Catalog.API
             app.UseRateLimiter();
             app.MapCarter();
             app.UseExceptionHandler(options => { });
+            app.UseHealthChecks("/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             return app;
         }
     }

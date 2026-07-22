@@ -49,6 +49,12 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql/data
 
+  ninja.eshop.distibutedCache:
+    container_name: ninja.eshop.distibutedCache
+    restart: always
+    ports:
+      - "6379:6379"
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin

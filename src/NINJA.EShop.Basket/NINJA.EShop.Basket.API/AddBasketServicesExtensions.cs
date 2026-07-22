@@ -1,6 +1,7 @@
 ﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Caching.Distributed;
 using NINJA.EShop.Basket.API.Basket;
 using NINJA.EShop.Basket.API.Data;
 using NINJA.EShop.Shared.Behaviors;
@@ -45,8 +46,19 @@ namespace NINJA.EShop.Basket.API
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
             }
-            builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+            /// Instead Use Scrutor to decorate the BasketRepository with CacheBasketRepository
+            ///builder.Services.AddScoped<IBasketRepository>(provider =>
+            ///{
+            ///    var basketRepository = provider.GetRequiredService<BasketRepository>();
+            ///    return new CacheBasketRepository(basketRepository,provider.GetService<IDistributedCache>());
+            ///});
             builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+            builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
+            });
+            builder.Services.AddExceptionHandler<CustomExceptionHandler>();
             builder.Services.AddHealthChecks().AddNpgSql(martenDbConStr);
             return builder;
         }

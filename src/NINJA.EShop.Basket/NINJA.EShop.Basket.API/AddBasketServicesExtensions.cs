@@ -23,11 +23,12 @@ namespace NINJA.EShop.Basket.API
             {
                 cfg.WithModule<BasketEndpoints>();
             });
-            //var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
-            //builder.Services.AddMarten(options =>
-            //{
-            //    options.Connection(martenDbConStr);
-            //}).UseLightweightSessions();
+            var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
+            builder.Services.AddMarten(options =>
+            {
+                options.Connection(martenDbConStr);
+                options.Schema.For<ShoppingCart>().Identity(x => x.UserName);
+            }).UseLightweightSessions();
             builder.Services.AddRateLimiter(options =>
             {
                 // Default policy

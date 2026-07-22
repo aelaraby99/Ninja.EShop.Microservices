@@ -5,3 +5,4 @@ global using Marten;
 global using Mapster;
 global using MediatR;
 global using FluentValidation;
+global using NINJA.EShop.Basket.API.Exceptions;

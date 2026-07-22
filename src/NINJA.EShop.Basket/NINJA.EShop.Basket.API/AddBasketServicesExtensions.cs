@@ -1,9 +1,7 @@
-﻿using Carter;
-using FluentValidation;
-using HealthChecks.UI.Client;
-using Marten;
+﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
+using NINJA.EShop.Basket.API.Basket;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
 namespace NINJA.EShop.Basket.API
@@ -23,12 +21,13 @@ namespace NINJA.EShop.Basket.API
             builder.Services.AddValidatorsFromAssembly(programAssembly);
             builder.Services.AddCarter(configurator: cfg =>
             {
+                cfg.WithModule<BasketEndpoints>();
             });
-            var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
-            builder.Services.AddMarten(options =>
-            {
-                options.Connection(martenDbConStr);
-            }).UseLightweightSessions();
+            //var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
+            //builder.Services.AddMarten(options =>
+            //{
+            //    options.Connection(martenDbConStr);
+            //}).UseLightweightSessions();
             builder.Services.AddRateLimiter(options =>
             {
                 // Default policy

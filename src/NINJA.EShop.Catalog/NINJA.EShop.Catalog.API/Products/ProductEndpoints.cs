@@ -4,8 +4,10 @@ using NINJA.EShop.Catalog.API.Products.GetProductByCategory;
 using NINJA.EShop.Catalog.API.Products.GetProductById;
 using NINJA.EShop.Catalog.API.Products.GetProducts;
 using NINJA.EShop.Catalog.API.Products.UpdateProduct;
+using NINJA.EShop.Shared.Results;
 namespace NINJA.EShop.Catalog.API.Products
 {
+    public record GetProductsRequest(int PageNumber = 1,int PageSize = 10);
     public record GetProductsResponse(IEnumerable<Product> Products);
     public record CreateProductRequest(string Name,List<string> Category,string Description,string ImageFile,decimal Price);
     public record UpdateProductRequest(Guid Id,string Name,List<string> Category,string Description,string ImageFile,decimal Price);
@@ -18,9 +20,10 @@ namespace NINJA.EShop.Catalog.API.Products
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/products",async (ISender sender) =>
+            app.MapGet("/products",async ([AsParameters] GetProductsRequest request,ISender sender) =>
             {
-                var result = await sender.Send(new GeProductsQuery());
+                var query = request.Adapt<GeProductsQuery>();
+                var result = await sender.Send(query);
                 var response = result.Adapt<GetProductsResponse>();
                 return Results.Ok(response);
             }).RequireRateLimiting("default")
@@ -34,7 +37,7 @@ namespace NINJA.EShop.Catalog.API.Products
             {
                 var command = request.Adapt<CreateProductCommand>();
                 var result = await sender.Send(command);
-                var response = result.Adapt<CreateProductResponse>();
+                var response = new CreateProductResponse(result.Id);
                 return Results.Created($"/products/{response.Id}",response);
             }).RequireRateLimiting("create-product")
             .WithTags("Products")

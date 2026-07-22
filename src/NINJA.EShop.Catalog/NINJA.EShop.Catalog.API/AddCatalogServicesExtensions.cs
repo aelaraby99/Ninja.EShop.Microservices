@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.RateLimiting;
+using NINJA.EShop.Catalog.API.Data;
 using NINJA.EShop.Catalog.API.Products;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
@@ -42,8 +43,12 @@ namespace NINJA.EShop.Catalog.API
                     opt.QueueLimit = 0;
                 });
             });
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.InitializeMartenWith<CatalogInitialData>();
+                builder.Services.AddEndpointsApiExplorer();
+                builder.Services.AddSwaggerGen();
+            }
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
             return builder;
         }
@@ -57,9 +62,7 @@ namespace NINJA.EShop.Catalog.API
             app.UseHttpsRedirection();
             app.UseRateLimiter();
             app.MapCarter();
-            app.UseExceptionHandler(options =>
-            {
-            });
+            app.UseExceptionHandler(options => { });
             return app;
         }
     }

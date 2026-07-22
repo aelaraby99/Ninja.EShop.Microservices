@@ -1,4 +1,6 @@
-﻿namespace NINJA.EShop.Basket.API.Basket.StoreBasket
+﻿using NINJA.EShop.Basket.API.Data;
+
+namespace NINJA.EShop.Basket.API.Basket.StoreBasket
 {
     public record StoreBasketCommand(ShoppingCart Cart): ICommand<StoreBasketResult>;
     public record StoreBasketResult(string UserName);
@@ -11,14 +13,14 @@
             RuleFor(x => x.Cart.Items).NotNull();
         }
     }
-    public class StoreBasketCommandHandler
+    public class StoreBasketCommandHandler(IBasketRepository baskets)
         : ICommandHandler<StoreBasketCommand,StoreBasketResult>
     {
-        public async Task<StoreBasketResult> Handle(StoreBasketCommand request,CancellationToken cancellationToken)
+        public async Task<StoreBasketResult> Handle(StoreBasketCommand command,CancellationToken cancellationToken)
         {
-            var cart = request.Cart;
-            // Store and Update Cache
-            return new StoreBasketResult("true");
+            var cart = command.Cart;
+            var basket = await baskets.StoreBasketAsync(cart,cancellationToken);
+            return new StoreBasketResult(basket.UserName);
         }
     }
 }

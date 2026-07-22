@@ -1,4 +1,6 @@
-﻿namespace NINJA.EShop.Basket.API.Basket.DeleteBasket
+﻿using NINJA.EShop.Basket.API.Data;
+
+namespace NINJA.EShop.Basket.API.Basket.DeleteBasket
 {
     public record DeleteBasketCommand(string UserName): ICommand<DeleteBasketResult>;
     public record DeleteBasketResult(bool IsSuccess);
@@ -9,11 +11,13 @@
             RuleFor(x => x.UserName).NotEmpty();
         }
     }
-    public class DeleteBasketCommandHandler: ICommandHandler<DeleteBasketCommand,DeleteBasketResult>
+    public class DeleteBasketCommandHandler(IBasketRepository baskets)
+        : ICommandHandler<DeleteBasketCommand,DeleteBasketResult>
     {
         public async Task<DeleteBasketResult> Handle(DeleteBasketCommand command,CancellationToken cancellationToken)
         {
-            return new DeleteBasketResult(true);
+            var result = await baskets.DeleteBasketAsync(command.UserName);
+            return new DeleteBasketResult(result);
         }
     }
 }

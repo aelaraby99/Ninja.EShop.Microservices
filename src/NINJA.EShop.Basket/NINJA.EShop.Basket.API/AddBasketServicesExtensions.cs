@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Basket.API.Basket;
+using NINJA.EShop.Basket.API.Data;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
 namespace NINJA.EShop.Basket.API
@@ -45,7 +46,8 @@ namespace NINJA.EShop.Basket.API
                 builder.Services.AddSwaggerGen();
             }
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-            builder.Services.AddHealthChecks();
+            builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+            builder.Services.AddHealthChecks().AddNpgSql(martenDbConStr);
             return builder;
         }
         public static WebApplication AddBasketPipelines(this WebApplication app)

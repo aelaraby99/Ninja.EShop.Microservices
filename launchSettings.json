@@ -4,7 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "ninja.eshop.catalog.api": "StartDebugging"
+        "ninja.eshop.catalog.api": "StartDebugging",
+        "ninja.eshop.basket.api": "StartDebugging"
       }
     }
   }

@@ -11,6 +11,19 @@ services:
       - "6060:8081"
     depends_on:
       - ninja.eshop.catalog.Db
+     
+  ninja.eshop.basket.api:
+    container_name: ninja.eshop.basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__MartenDb=Server=ninja.eshop.basket.Db;Port=5432;Database=NinjaEShopBasketDb;Username=postgres;Password=postgres;Include Error Detail=true
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    depends_on:
+      - ninja.eshop.basket.Db
 
   ninja.eshop.catalog.Db:
     container_name: ninja.eshop.catalog.Db
@@ -24,12 +37,25 @@ services:
     volumes:
       - postgres_catalog:/var/lib/postgresql/data
 
+  ninja.eshop.basket.Db:
+    container_name: ninja.eshop.basket.Db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: NinjaEShopBasketDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     restart: always
     depends_on:
       - ninja.eshop.catalog.Db
+      - ninja.eshop.basket.Db
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
@@ -39,4 +65,5 @@ services:
       - pgadmin_data:/var/lib/pgadmin
 volumes:
   postgres_catalog:
+  postgres_basket:
   pgadmin_data:

@@ -15,6 +15,12 @@ services:
     depends_on:
       - ninja.eshop.basket.Db
 
+  ninja.eshop.discount.grpc:
+    image: ${DOCKER_REGISTRY-}ninjaeshopdiscountgrpc
+    build:
+      context: .
+      dockerfile: src/NINJA.EShop.Discount/NINJA.EShop.Discount.Grpc/Dockerfile
+
   ninja.eshop.catalog.Db:
     image: postgres:16
     restart: always

@@ -42,10 +42,27 @@ namespace NINJA.EShop.Basket.API
 
         private static void GrpcServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+            if (builder.Environment.IsDevelopment())
             {
-                options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
-            });
+                builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+                {
+                    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+                }).ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    return new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+                });
+            }
+            else
+            {
+                builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+                {
+                    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+                });
+            }
+
         }
 
         private static void CrossCuttingServices(WebApplicationBuilder builder,string redisDbConStr,string martenDbConStr)

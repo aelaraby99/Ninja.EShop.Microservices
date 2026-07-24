@@ -6,7 +6,6 @@ services:
       dockerfile: NINJA.EShop.Catalog/NINJA.EShop.Catalog.API/Dockerfile
     depends_on:
       - ninja.eshop.catalog.Db
-
   ninja.eshop.basket.api:
     image: ${DOCKER_REGISTRY-}ninjaeshopbasketapi
     build:

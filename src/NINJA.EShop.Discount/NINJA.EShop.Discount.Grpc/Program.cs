@@ -1,14 +1,12 @@
-using NINJA.EShop.Discount.Grpc.Services;
+using NINJA.EShop.Discount.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.AddDiscountServices();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//app.MapGrpcService<GreeterService>();
-app.MapGrpcService<DiscountService>();
-
+app.UseDiscountServices();
 app.Run();

@@ -4,6 +4,9 @@
   </Folder>
   <Folder Name="/src/NINJA.EShop.Ordering/">
     <Project Path="src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.API/NINJA.EShop.Ordering.API.csproj" Id="00155f30-dec8-405e-97d0-0cb55a9310ac" />
+    <Project Path="src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.Application/NINJA.EShop.Ordering.Application.csproj" Id="d069635b-1979-4559-97dd-52e1ae0e6e8b" />
+    <Project Path="src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.Domain/NINJA.EShop.Ordering.Domain.csproj" Id="1f318f2c-596f-4544-8ebe-999924d8a075" />
+    <Project Path="src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.Infrastructure/NINJA.EShop.Ordering.Infrastructure.csproj" Id="33dd9105-6fc4-4783-80db-3c19eaa519f4" />
   </Folder>
   <Folder Name="/src/NINJA.EShop.Shared/">
     <Project Path="src/NINJA.EShop.Shared/NINJA.EShop.Shared/NINJA.EShop.Shared.csproj" Id="f8237c26-1a83-46e3-be25-2727842bd530" />

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared\NINJA.EShop.Shared.csproj" />
+		<ProjectReference Include="..\NINJA.EShop.Ordering.Domain\NINJA.EShop.Ordering.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

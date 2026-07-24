@@ -5,5 +5,5 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddBasketServices();
 var app = builder.Build();
 // Configure the HTTP request pipeline
-app.AddBasketPipelines();
+app.UseBasketServices();
 app.Run();

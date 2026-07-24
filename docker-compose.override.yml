@@ -23,12 +23,14 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__MartenDb=Server=ninja.eshop.basket.Db;Port=5432;Database=NinjaEShopBasketDb;Username=postgres;Password=postgres;Include Error Detail=true
       - ConnectionStrings__Redis=ninja.eshop.distibutedCache:6379
+      - GrpcSettings__DiscountUrl=https://ninja.eshop.discount.grpc:8081
     ports:
       - "6001:8080"
       - "6061:8081"
     depends_on:
       - ninja.eshop.basket.Db
       - ninja.eshop.distibutedCache   
+      - ninja.eshop.discount.grpc 
     volumes:
     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
     - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro

@@ -1,4 +1,5 @@
 ﻿using NINJA.EShop.Basket.API.Data;
+using NINJA.EShop.Discount.Grpc.Protos;
 
 namespace NINJA.EShop.Basket.API.Basket.StoreBasket
 {
@@ -13,14 +14,23 @@ namespace NINJA.EShop.Basket.API.Basket.StoreBasket
             RuleFor(x => x.Cart.Items).NotNull();
         }
     }
-    public class StoreBasketCommandHandler(IBasketRepository baskets)
+    public class StoreBasketCommandHandler(IBasketRepository baskets,DiscountProtoService.DiscountProtoServiceClient discountProto)
         : ICommandHandler<StoreBasketCommand,StoreBasketResult>
     {
         public async Task<StoreBasketResult> Handle(StoreBasketCommand command,CancellationToken cancellationToken)
         {
-            var cart = command.Cart;
-            var basket = await baskets.StoreBasketAsync(cart,cancellationToken);
-            return new StoreBasketResult(basket.UserName);
+            await DeductDiscount(command,cancellationToken);
+            await baskets.StoreBasketAsync(command.Cart,cancellationToken);
+            return new StoreBasketResult(command.Cart.UserName);
+        }
+
+        private async Task DeductDiscount(StoreBasketCommand command,CancellationToken cancellationToken)
+        {
+            foreach (var item in command.Cart.Items)
+            {
+                var coupon = await discountProto.GetDiscountAsync(new GetDiscountRequest { ProductName = item.ProductName },cancellationToken: cancellationToken);
+                item.Price -= coupon.Amount;
+            }
         }
     }
 }

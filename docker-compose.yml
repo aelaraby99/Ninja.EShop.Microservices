@@ -43,7 +43,7 @@ services:
   ninja.eshop.ordering.Db:
     image: mcr.microsoft.com/mssql/server
     restart: always
+
 volumes:
   postgres_catalog:
   postgres_basket:
-  

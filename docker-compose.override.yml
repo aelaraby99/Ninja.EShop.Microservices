@@ -41,7 +41,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__OrderingDb=Server=ninja.eshop.ordering.Db;Database=NinjaEShopOrderingDb;User Id=sa;Password=Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=True;Include Error Detail=true
+      - ConnectionStrings__OrderingDb=Server=ninja.eshop.ordering.Db;Database=NinjaEShopOrderingDb;User Id=sa;Password=Passw0rd123!;TrustServerCertificate=True;MultipleActiveResultSets=True
     ports:
       - "6003:8080"
       - "6063:8081"
@@ -99,11 +99,13 @@ services:
   ninja.eshop.ordering.Db:
     container_name: ninja.eshop.ordering.Db
     environment:
-      - Accept_EULA=Y
-      - SA_PASSWORD=Passw0rd
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Passw0rd123!
     restart: always
     ports:
-    - "1433:1433" 
+      - "1433:1433" 
+    volumes:
+      - sqlserver_data:/var/opt/mssql
 
   pgadmin:
     image: dpage/pgadmin4
@@ -134,6 +136,6 @@ services:
 volumes:
   postgres_catalog:
   postgres_basket:
+  sqlserver_data:
   pgadmin_data:
   redisinsight_data:
-

@@ -6,13 +6,10 @@ public static class DependencyInjection
     {
         return services;
     }
-    public static async Task<WebApplication> UseApiServices(this WebApplication app)
+    public static WebApplication UseApiServices(this WebApplication app)
     {
         //app.MapCarter();
-        if (app.Environment.IsDevelopment())
-        {
-            await app.InitialiseDatabaseAsync();
-        }
+
         return app;
     }
 }

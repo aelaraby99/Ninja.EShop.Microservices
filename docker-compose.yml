@@ -1,4 +1,12 @@
 services:
+  ninja.eshop.ordering.api:
+    image: ${DOCKER_REGISTRY-}ninjaeshoporderingapi
+    build:
+      context: .
+      dockerfile: src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.API/Dockerfile
+    depends_on:
+      - ninja.eshop.ordering.Db
+
   ninja.eshop.catalog.api:
     image: ${DOCKER_REGISTRY-}ninjaeshopcatalogapi
     build:
@@ -35,7 +43,7 @@ services:
   ninja.eshop.ordering.Db:
     image: mcr.microsoft.com/mssql/server
     restart: always
-
 volumes:
   postgres_catalog:
   postgres_basket:
+  

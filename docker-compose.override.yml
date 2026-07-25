@@ -35,6 +35,23 @@ services:
     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
     - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro
 
+  ninja.eshop.ordering.api:
+    container_name: ninja.eshop.ordering.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__OrderingDb=Server=ninja.eshop.ordering.Db;Database=NinjaEShopOrderingDb;User Id=sa;Password=Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=True;Include Error Detail=true
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    depends_on:
+      - ninja.eshop.ordering.Db
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+
   ninja.eshop.discount.grpc:
     container_name: ninja.eshop.discount.grpc
     environment:
@@ -113,8 +130,10 @@ services:
       - "5540:5540"
     volumes:
       - redisinsight_data:/data
+
 volumes:
   postgres_catalog:
   postgres_basket:
   pgadmin_data:
   redisinsight_data:
+

@@ -20,7 +20,7 @@ public record Address
         State = state;
         ZipCode = zipCode;
     }
-    public static Address Create(string firstName,string lastName,string? emailAddress,string addressLine,string country,string state,string zipCode)
+    public static Address Of(string firstName,string lastName,string? emailAddress,string addressLine,string country,string state,string zipCode)
     {
         ArgumentException.ThrowIfNullOrEmpty(firstName,nameof(firstName));
         ArgumentException.ThrowIfNullOrEmpty(lastName,nameof(lastName));

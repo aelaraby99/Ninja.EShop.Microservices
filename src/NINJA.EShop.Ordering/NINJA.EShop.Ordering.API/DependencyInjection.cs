@@ -1,15 +1,18 @@
-﻿namespace NINJA.EShop.Ordering.API
+﻿namespace NINJA.EShop.Ordering.API;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddOrderingApiServices(this IServiceCollection services)
     {
-        public static IServiceCollection AddOrderingApiServices(this IServiceCollection services)
+        return services;
+    }
+    public static async Task<WebApplication> UseApiServices(this WebApplication app)
+    {
+        //app.MapCarter();
+        if (app.Environment.IsDevelopment())
         {
-            return services;
+            await app.InitialiseDatabaseAsync();
         }
-        public static WebApplication UseApiServices(this WebApplication app)
-        {
-            //app.MapCarter();
-            return app;
-        }
+        return app;
     }
 }

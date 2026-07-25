@@ -1,18 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace NINJA.EShop.Ordering.Infrastructure
+﻿namespace NINJA.EShop.Ordering.Infrastructure
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("OrderingDb");
-            //services.AddDbContext<OrderingDbContext>(options =>
-            //{
-            //    options.UseSqlServer(connectionString);
-            //});
-            //services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
+            services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor,DispatchDomainEventsInterceptor>();
+            services.AddDbContext<ApplicationDbContext>((sp,options) =>
+            {
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+                options.UseSqlServer(connectionString);
+            });
+            services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
             return services;
         }
     }

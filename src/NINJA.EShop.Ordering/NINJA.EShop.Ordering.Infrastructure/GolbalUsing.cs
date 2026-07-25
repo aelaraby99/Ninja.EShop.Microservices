@@ -1,0 +1,9 @@
+﻿global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.EntityFrameworkCore;
+global using NINJA.EShop.Ordering.Application.Data;
+global using NINJA.EShop.Ordering.Domain.Models;
+global using System.Reflection;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using NINJA.EShop.Ordering.Infrastructure.Data;
+global using NINJA.EShop.Ordering.Infrastructure.Data.Interceptors;

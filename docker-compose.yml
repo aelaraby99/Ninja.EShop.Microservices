@@ -32,6 +32,10 @@ services:
     image: redis:8.8
     restart: always
 
+  ninja.eshop.ordering.Db:
+    image: mcr.microsoft.com/mssql/server
+    restart: always
+
 volumes:
   postgres_catalog:
   postgres_basket:

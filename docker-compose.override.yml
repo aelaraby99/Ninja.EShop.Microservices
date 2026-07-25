@@ -79,6 +79,15 @@ services:
     ports:
       - "6379:6379"
 
+  ninja.eshop.ordering.Db:
+    container_name: ninja.eshop.ordering.Db
+    environment:
+      - Accept_EULA=Y
+      - SA_PASSWORD=Passw0rd
+    restart: always
+    ports:
+    - "1433:1433" 
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin

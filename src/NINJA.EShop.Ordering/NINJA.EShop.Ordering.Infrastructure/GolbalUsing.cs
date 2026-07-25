@@ -7,3 +7,5 @@ global using System.Reflection;
 global using Microsoft.EntityFrameworkCore.Diagnostics;
 global using NINJA.EShop.Ordering.Infrastructure.Data;
 global using NINJA.EShop.Ordering.Infrastructure.Data.Interceptors;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using NINJA.EShop.Ordering.Domain.ValueObjects;

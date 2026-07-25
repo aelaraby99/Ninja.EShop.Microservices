@@ -1,9 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace NINJA.EShop.Ordering.Infrastructure.Data.Configurations;
 
-namespace NINJA.EShop.Ordering.Infrastructure.Data.Configurations;
-
-internal class ProductConfiguration
+public class ProductConfiguration: IEntityTypeConfiguration<Product>
 {
+    public void Configure(EntityTypeBuilder<Product> builder)
+    {
+        builder.HasKey(p => p.Id);
+        builder.Property(p => p.Id)
+            .HasConversion(
+                productId => productId.Value,
+                dbId => ProductId.Of(dbId));
+        builder.Property(p => p.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+    }
 }

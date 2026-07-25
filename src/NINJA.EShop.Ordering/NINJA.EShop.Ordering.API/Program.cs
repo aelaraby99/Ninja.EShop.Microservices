@@ -1,7 +1,3 @@
-using NINJA.EShop.Ordering.API;
-using NINJA.EShop.Ordering.Application;
-using NINJA.EShop.Ordering.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

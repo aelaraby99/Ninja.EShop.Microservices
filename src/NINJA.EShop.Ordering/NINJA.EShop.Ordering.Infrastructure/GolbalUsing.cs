@@ -9,3 +9,5 @@ global using NINJA.EShop.Ordering.Infrastructure.Data;
 global using NINJA.EShop.Ordering.Infrastructure.Data.Interceptors;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using NINJA.EShop.Ordering.Domain.ValueObjects;
+global using MediatR;
+global using NINJA.EShop.Ordering.Domain.Abstractions;

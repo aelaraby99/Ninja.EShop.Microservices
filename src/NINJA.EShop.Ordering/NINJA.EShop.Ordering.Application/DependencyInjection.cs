@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NINJA.EShop.Shared.Behaviors;
 using System.Reflection;
 namespace NINJA.EShop.Ordering.Application
 {
@@ -9,6 +10,8 @@ namespace NINJA.EShop.Ordering.Application
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
+                cfg.AddBehavior(typeof(LoggingBehavior<,>));
             });
             return services;
         }

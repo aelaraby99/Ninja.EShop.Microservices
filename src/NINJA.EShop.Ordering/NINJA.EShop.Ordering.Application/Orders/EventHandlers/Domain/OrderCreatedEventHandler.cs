@@ -3,9 +3,9 @@
 public class OrderCreatedEventHandler
     (ILogger<OrderCreatedEventHandler> logger): INotificationHandler<OrderCreatedEvent>
 {
-    public async Task Handle(OrderCreatedEvent domainEvent,CancellationToken cancellationToken)
+    public  Task Handle(OrderCreatedEvent domainEvent,CancellationToken cancellationToken)
     {
         logger.LogInformation("Domain Event handled: {DomainEvent}",domainEvent.GetType().Name);
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }

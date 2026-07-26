@@ -11,7 +11,7 @@ namespace NINJA.EShop.Ordering.Application
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
-                cfg.AddBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
             return services;
         }

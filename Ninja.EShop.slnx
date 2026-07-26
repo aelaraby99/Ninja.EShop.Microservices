@@ -9,6 +9,7 @@
     <Project Path="src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.Infrastructure/NINJA.EShop.Ordering.Infrastructure.csproj" Id="33dd9105-6fc4-4783-80db-3c19eaa519f4" />
   </Folder>
   <Folder Name="/src/NINJA.EShop.Shared/">
+    <Project Path="src/NINJA.EShop.Shared/NINJA.EShop.Shared.Messaging/NINJA.EShop.Shared.Messaging.csproj" Id="98448174-8f33-48d6-bfd8-843ca21e91e9" />
     <Project Path="src/NINJA.EShop.Shared/NINJA.EShop.Shared/NINJA.EShop.Shared.csproj" Id="f8237c26-1a83-46e3-be25-2727842bd530" />
   </Folder>
   <Folder Name="/src/" />

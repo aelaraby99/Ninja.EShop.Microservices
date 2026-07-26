@@ -7,12 +7,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared\NINJA.EShop.Shared.csproj" />
 		<ProjectReference Include="..\NINJA.EShop.Ordering.Domain\NINJA.EShop.Ordering.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Orders\EventHandlers\Domain\" />
+		<Folder Include="Orders\EventHandlers\Integration\" />
+		<Folder Include="Orders\Queries\" />
 	</ItemGroup>
 
 </Project>

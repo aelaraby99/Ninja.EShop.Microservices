@@ -2,3 +2,8 @@
 global using NINJA.EShop.Ordering.Application;
 global using NINJA.EShop.Ordering.Infrastructure;
 global using NINJA.EShop.Ordering.Infrastructure.Data.Extentions;
+global using Carter;
+global using Mapster;
+global using MediatR;
+global using NINJA.EShop.Ordering.Application.Dtos;
+global using NINJA.EShop.Ordering.Application.Orders.Commands.CreateOrder;

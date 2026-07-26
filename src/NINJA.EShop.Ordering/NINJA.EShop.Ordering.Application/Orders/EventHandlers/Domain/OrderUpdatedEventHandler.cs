@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace NINJA.EShop.Ordering.Application.Orders.EventHandlers.Domain;
 
-namespace NINJA.EShop.Ordering.Application.Orders.EventHandlers.Domain;
-
-internal class OrderUpdatedEventHandler
+public class OrderUpdatedEventHandler(ILogger<OrderUpdatedEventHandler> logger): INotificationHandler<OrderUpdatedEvent>
 {
+    public async Task Handle(OrderUpdatedEvent domainEvent,CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Domain Event handled: {DomainEvent}",domainEvent.GetType().Name);
+        throw new NotImplementedException();
+    }
 }

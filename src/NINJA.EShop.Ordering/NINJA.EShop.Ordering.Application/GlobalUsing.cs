@@ -2,3 +2,8 @@
 global using NINJA.EShop.Ordering.Domain.Models;
 global using NINJA.EShop.Shared.CQRS;
 global using NINJA.EShop.Ordering.Domain.Enums;
+global using NINJA.EShop.Ordering.Application.Dtos;
+global using NINJA.EShop.Ordering.Application.Data;
+global using NINJA.EShop.Ordering.Domain.ValueObjects;
+global using FluentValidation;
+global using NINJA.EShop.Ordering.Application.Exceptions;

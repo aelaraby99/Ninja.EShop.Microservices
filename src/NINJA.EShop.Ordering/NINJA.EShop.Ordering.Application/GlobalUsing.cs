@@ -7,3 +7,7 @@ global using NINJA.EShop.Ordering.Application.Data;
 global using NINJA.EShop.Ordering.Domain.ValueObjects;
 global using FluentValidation;
 global using NINJA.EShop.Ordering.Application.Exceptions;
+global using MediatR;
+global using NINJA.EShop.Ordering.Domain.Events;
+global using Microsoft.Extensions.Logging;
+global using NINJA.EShop.Ordering.Application.Extensions;

@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Basket.API.Basket;
+using NINJA.EShop.Basket.API.Basket.CheckoutBasket;
 using NINJA.EShop.Basket.API.Data;
 using NINJA.EShop.Discount.Grpc.Protos;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
+using NINJA.EShop.Shared.Messaging.MassTransit;
 namespace NINJA.EShop.Basket.API
 {
     public static class AddBasketServicesExtensions
@@ -17,6 +19,7 @@ namespace NINJA.EShop.Basket.API
             ApplicationServices(builder);
             DataServices(builder,redisDbConStr,martenDbConStr);
             CrossCuttingServices(builder,redisDbConStr,martenDbConStr);
+            builder.Services.AddMessageBroker();
             GrpcServices(builder);
             return builder;
         }
@@ -106,6 +109,7 @@ namespace NINJA.EShop.Basket.API
             builder.Services.AddCarter(configurator: cfg =>
             {
                 cfg.WithModule<BasketEndpoints>();
+                cfg.WithModule<CheckoutBasketEndpoint>();
             });
             if (builder.Environment.IsDevelopment())
             {

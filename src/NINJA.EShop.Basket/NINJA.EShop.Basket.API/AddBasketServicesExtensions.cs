@@ -45,9 +45,8 @@ namespace NINJA.EShop.Basket.API
 
         private static void GrpcServices(WebApplicationBuilder builder)
         {
-            if (builder.Environment.IsDevelopment())
-            {
-                builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+            var grpcClientBuilder = builder.Environment.IsDevelopment()
+                ? builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
                 {
                     options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
                 }).ConfigurePrimaryHttpMessageHandler(() =>
@@ -56,16 +55,24 @@ namespace NINJA.EShop.Basket.API
                     {
                         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                     };
-                });
-            }
-            else
-            {
-                builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+                })
+                : builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
                 {
                     options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
                 });
-            }
 
+            // Circuit breaker + retry + timeout around the synchronous Discount gRPC dependency,
+            // so a Discount outage fails fast instead of hanging/cascading into Basket requests.
+            grpcClientBuilder.AddStandardResilienceHandler(options =>
+            {
+                options.CircuitBreaker.FailureRatio = 0.5;
+                options.CircuitBreaker.MinimumThroughput = 5;
+                options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(30);
+                options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(15);
+                options.Retry.MaxRetryAttempts = 3;
+                options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(2);
+                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(10);
+            });
         }
 
         private static void CrossCuttingServices(WebApplicationBuilder builder,string redisDbConStr,string martenDbConStr)

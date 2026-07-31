@@ -6,6 +6,9 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__MartenDb=Server=ninja.eshop.catalog.Db;Port=5432;Database=NinjaEShopCatalogDb;Username=postgres;Password=postgres;Include Error Detail=true
+      - MessageBroker__Host=ninja.eshop.messagebroker
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
     ports:
       - "6000:8080"
       - "6060:8081"
@@ -14,6 +17,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro
     depends_on:
       - ninja.eshop.catalog.Db
+      - ninja.eshop.messagebroker
      
   ninja.eshop.basket.api:
     container_name: ninja.eshop.basket.api
@@ -24,13 +28,17 @@ services:
       - ConnectionStrings__MartenDb=Server=ninja.eshop.basket.Db;Port=5432;Database=NinjaEShopBasketDb;Username=postgres;Password=postgres;Include Error Detail=true
       - ConnectionStrings__Redis=ninja.eshop.distibutedCache:6379
       - GrpcSettings__DiscountUrl=https://ninja.eshop.discount.grpc:8081
+      - MessageBroker__Host=ninja.eshop.messagebroker
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
     ports:
       - "6001:8080"
       - "6061:8081"
     depends_on:
       - ninja.eshop.basket.Db
-      - ninja.eshop.distibutedCache   
-      - ninja.eshop.discount.grpc 
+      - ninja.eshop.distibutedCache
+      - ninja.eshop.discount.grpc
+      - ninja.eshop.messagebroker
     volumes:
     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
     - ${APPDATA}/ASP.NET/Https:/home/.aspnet/https:ro
@@ -42,11 +50,15 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__OrderingDb=Server=ninja.eshop.ordering.Db;Database=NinjaEShopOrderingDb;User Id=sa;Password=Passw0rd123!;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - MessageBroker__Host=ninja.eshop.messagebroker
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
     ports:
       - "6003:8080"
       - "6063:8081"
     depends_on:
       - ninja.eshop.ordering.Db
+      - ninja.eshop.messagebroker
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -103,9 +115,21 @@ services:
       - MSSQL_SA_PASSWORD=Passw0rd123!
     restart: always
     ports:
-      - "1433:1433" 
+      - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+
+  ninja.eshop.messagebroker:
+    container_name: ninja.eshop.messagebroker
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
   pgadmin:
     image: dpage/pgadmin4
@@ -139,3 +163,4 @@ volumes:
   sqlserver_data:
   pgadmin_data:
   redisinsight_data:
+  rabbitmq_data:

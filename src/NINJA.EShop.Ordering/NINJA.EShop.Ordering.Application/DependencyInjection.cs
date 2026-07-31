@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NINJA.EShop.Shared.Behaviors;
-using NINJA.EShop.Shared.Messaging.MassTransit;
 using System.Reflection;
 namespace NINJA.EShop.Ordering.Application
 {
@@ -15,7 +14,8 @@ namespace NINJA.EShop.Ordering.Application
                 cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
-            services.AddMessageBroker(Assembly.GetExecutingAssembly());
+            // Message broker (consumers + saga) is registered in Infrastructure, where the
+            // EF Core outbox/inbox needs ApplicationDbContext.
             return services;
         }
     }

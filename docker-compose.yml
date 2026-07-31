@@ -6,6 +6,7 @@ services:
       dockerfile: src/NINJA.EShop.Ordering/NINJA.EShop.Ordering.API/Dockerfile
     depends_on:
       - ninja.eshop.ordering.Db
+      - ninja.eshop.messagebroker
 
   ninja.eshop.catalog.api:
     image: ${DOCKER_REGISTRY-}ninjaeshopcatalogapi
@@ -14,6 +15,7 @@ services:
       dockerfile: NINJA.EShop.Catalog/NINJA.EShop.Catalog.API/Dockerfile
     depends_on:
       - ninja.eshop.catalog.Db
+      - ninja.eshop.messagebroker
   ninja.eshop.basket.api:
     image: ${DOCKER_REGISTRY-}ninjaeshopbasketapi
     build:
@@ -21,6 +23,7 @@ services:
       dockerfile: NINJA.EShop.Basket/NINJA.EShop.Basket.API/Dockerfile
     depends_on:
       - ninja.eshop.basket.Db
+      - ninja.eshop.messagebroker
 
   ninja.eshop.discount.grpc:
     image: ${DOCKER_REGISTRY-}ninjaeshopdiscountgrpc
@@ -42,6 +45,10 @@ services:
 
   ninja.eshop.ordering.Db:
     image: mcr.microsoft.com/mssql/server
+    restart: always
+
+  ninja.eshop.messagebroker:
+    image: rabbitmq:4-management
     restart: always
 
 volumes:

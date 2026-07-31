@@ -10,7 +10,8 @@ public static class Extentions
 {
     public static IServiceCollection AddMessageBroker(
         this IServiceCollection services,
-        Assembly? consumersAssembly = null)
+        Assembly? consumersAssembly = null,
+        Action<IBusRegistrationConfigurator>? configureBus = null)
     {
         services.AddOptions<RabbitMqOptions>()
             .BindConfiguration(RabbitMqOptions.SectionName)
@@ -22,6 +23,8 @@ public static class Extentions
             bus.SetKebabCaseEndpointNameFormatter();
             if (consumersAssembly is not null)
                 bus.AddConsumers(consumersAssembly);
+
+            configureBus?.Invoke(bus);
 
             bus.UsingRabbitMq((context,cfg) =>
             {

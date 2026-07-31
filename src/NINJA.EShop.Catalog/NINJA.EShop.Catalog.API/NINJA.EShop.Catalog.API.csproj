@@ -15,5 +15,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared\NINJA.EShop.Shared.csproj" />
+		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared.Messaging\NINJA.EShop.Shared.Messaging.csproj" />
 	</ItemGroup>
 </Project>

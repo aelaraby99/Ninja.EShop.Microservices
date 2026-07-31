@@ -1,4 +1,9 @@
-﻿namespace NINJA.EShop.Ordering.Infrastructure
+﻿using MassTransit;
+using NINJA.EShop.Ordering.Application.Orders.EventHandlers.Integration;
+using NINJA.EShop.Ordering.Application.Sagas.OrderProcessing;
+using NINJA.EShop.Shared.Messaging.MassTransit;
+
+namespace NINJA.EShop.Ordering.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -13,6 +18,32 @@
                 options.UseSqlServer(connectionString);
             });
             services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
+
+            services.AddMessageBroker(typeof(BasketCheckoutEventHandler).Assembly,bus =>
+            {
+                // Transactional outbox: publishes made inside a consumer/handler scope are
+                // buffered on ApplicationDbContext and only sent once SaveChanges commits.
+                bus.AddEntityFrameworkOutbox<ApplicationDbContext>(o =>
+                {
+                    o.UseSqlServer();
+                    o.UseBusOutbox();
+                });
+
+                // Inbox pattern: every auto-configured receive endpoint dedupes consumed
+                // messages by MessageId via InboxState, guarding against redelivery.
+                bus.AddConfigureEndpointsCallback((context,_,cfg) =>
+                {
+                    cfg.UseEntityFrameworkOutbox<ApplicationDbContext>(context);
+                });
+
+                bus.AddSagaStateMachine<OrderProcessingStateMachine,OrderProcessingState>()
+                    .EntityFrameworkRepository(r =>
+                    {
+                        r.ExistingDbContext<ApplicationDbContext>();
+                        r.UseSqlServer();
+                    });
+            });
+
             return services;
         }
     }

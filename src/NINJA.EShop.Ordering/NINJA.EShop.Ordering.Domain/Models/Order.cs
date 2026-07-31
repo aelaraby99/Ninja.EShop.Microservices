@@ -37,6 +37,18 @@ public class Order: Aggregate<OrderId>
         Status = status;
         AddDomainEvent(new OrderUpdatedEvent(this));
     }
+    public void MarkAsCompleted()
+    {
+        Status = OrderStatus.Completed;
+        AddDomainEvent(new OrderUpdatedEvent(this));
+    }
+
+    public void MarkAsCancelled()
+    {
+        Status = OrderStatus.Cancelled;
+        AddDomainEvent(new OrderUpdatedEvent(this));
+    }
+
     public void AddOrderItem(ProductId productId,int quantity,decimal price)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);

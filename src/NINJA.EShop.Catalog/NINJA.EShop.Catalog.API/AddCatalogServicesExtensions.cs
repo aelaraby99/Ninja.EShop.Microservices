@@ -5,6 +5,7 @@ using NINJA.EShop.Catalog.API.Data;
 using NINJA.EShop.Catalog.API.Products;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
+using NINJA.EShop.Shared.Messaging.MassTransit;
 namespace NINJA.EShop.Catalog.API
 {
     public static class AddCatalogServicesExtensions
@@ -24,6 +25,7 @@ namespace NINJA.EShop.Catalog.API
             {
                 cfg.WithModule<ProductEndpoints>();
             });
+            builder.Services.AddMessageBroker(programAssembly);
             var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
             builder.Services.AddMarten(options =>
             {

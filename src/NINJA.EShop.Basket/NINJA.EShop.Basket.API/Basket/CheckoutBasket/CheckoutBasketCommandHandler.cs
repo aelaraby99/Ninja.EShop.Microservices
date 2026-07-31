@@ -16,6 +16,9 @@ public class CheckoutBasketCommandHandler
 
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
         eventMessage.TotalPrice = basket.TotalPrice;
+        eventMessage.Items = basket.Items
+            .Select(item => new BasketCheckoutItem(item.ProductId, item.Quantity, item.Price))
+            .ToList();
         await publishEndpoint.Publish(eventMessage,cancellationToken);
         await repository.DeleteBasketAsync(command.BasketCheckoutDto.UserName,cancellationToken);
         return new CheckoutBasketResult(true);

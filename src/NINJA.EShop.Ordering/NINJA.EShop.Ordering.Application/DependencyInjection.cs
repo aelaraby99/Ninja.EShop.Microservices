@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NINJA.EShop.Shared.Behaviors;
+using NINJA.EShop.Shared.Messaging.MassTransit;
 using System.Reflection;
 namespace NINJA.EShop.Ordering.Application
 {
@@ -13,6 +15,7 @@ namespace NINJA.EShop.Ordering.Application
                 cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
+            services.AddMessageBroker(Assembly.GetExecutingAssembly());
             return services;
         }
     }

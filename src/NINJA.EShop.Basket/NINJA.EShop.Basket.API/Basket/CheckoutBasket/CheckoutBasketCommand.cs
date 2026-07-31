@@ -12,5 +12,6 @@ public class CheckoutBasketCommandValidator
     {
         RuleFor(x => x.BasketCheckoutDto).NotNull().WithMessage("BasketCheckoutDto can't be null");
         RuleFor(x => x.BasketCheckoutDto.UserName).NotEmpty().WithMessage("UserName is required");
+        // Business validation and rules can be added here
     }
 }

@@ -11,12 +11,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared.Messaging\NINJA.EShop.Shared.Messaging.csproj" />
 		<ProjectReference Include="..\..\NINJA.EShop.Shared\NINJA.EShop.Shared\NINJA.EShop.Shared.csproj" />
 		<ProjectReference Include="..\NINJA.EShop.Ordering.Domain\NINJA.EShop.Ordering.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Orders\EventHandlers\Integration\" />
 	</ItemGroup>
 
 </Project>

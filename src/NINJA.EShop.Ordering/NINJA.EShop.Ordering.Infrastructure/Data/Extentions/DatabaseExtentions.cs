@@ -15,7 +15,7 @@ public static class DatabaseExtentions
     {
         await context.SeedCustomerAsync();
         await context.SeedProductAsync();
-        await context.SeedOrderandItemsAsync();
+        //await context.SeedOrderandItemsAsync();
     }
     private static async Task SeedCustomerAsync(this ApplicationDbContext context)
     {

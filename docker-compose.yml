@@ -19,8 +19,8 @@ services:
   ninja.eshop.basket.api:
     image: ${DOCKER_REGISTRY-}ninjaeshopbasketapi
     build:
-      context: src
-      dockerfile: NINJA.EShop.Basket/NINJA.EShop.Basket.API/Dockerfile
+      context: .
+      dockerfile: src/NINJA.EShop.Basket/NINJA.EShop.Basket.API/Dockerfile
     depends_on:
       - ninja.eshop.basket.Db
       - ninja.eshop.messagebroker

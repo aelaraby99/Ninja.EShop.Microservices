@@ -15,6 +15,7 @@ public class CheckoutBasketCommandHandler
             return new CheckoutBasketResult(false);
 
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
+        eventMessage.CustomerId = basket.CustomerId;
         eventMessage.TotalPrice = basket.TotalPrice;
         eventMessage.Items = basket.Items
             .Select(item => new BasketCheckoutItem(item.ProductId, item.Quantity, item.Price))

@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.FeatureManagement;
+using NINJA.EShop.Shared.Messaging.Events;
 
 namespace NINJA.EShop.Ordering.Application.Orders.EventHandlers.Domain;
 

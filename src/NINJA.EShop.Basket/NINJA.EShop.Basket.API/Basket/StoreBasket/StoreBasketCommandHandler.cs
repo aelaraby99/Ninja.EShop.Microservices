@@ -11,6 +11,7 @@ namespace NINJA.EShop.Basket.API.Basket.StoreBasket
         {
             RuleFor(x => x.Cart).NotNull();
             RuleFor(x => x.Cart.UserName).NotEmpty();
+            RuleFor(x => x.Cart.CustomerId).NotEmpty();
             RuleFor(x => x.Cart.Items).NotNull();
         }
     }

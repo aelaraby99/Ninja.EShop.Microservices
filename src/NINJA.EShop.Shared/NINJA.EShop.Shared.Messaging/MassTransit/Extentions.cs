@@ -43,12 +43,6 @@ public static class Extentions
                         TimeSpan.FromSeconds(30),
                         TimeSpan.FromSeconds(5)));
 
-                cfg.UseDelayedRedelivery(r =>
-                    r.Intervals(
-                        TimeSpan.FromMinutes(1),
-                        TimeSpan.FromMinutes(5),
-                        TimeSpan.FromMinutes(15)));
-
                 cfg.UseCircuitBreaker(cb =>
                 {
                     cb.ActiveThreshold = 10;

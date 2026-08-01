@@ -67,7 +67,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
 
                     b.HasIndex("Delivered");
 
-                    b.ToTable("InboxState");
+                    b.ToTable("InboxState", (string)null);
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.OutboxMessage", b =>
@@ -160,7 +160,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[InboxMessageId] IS NOT NULL AND [InboxConsumerId] IS NOT NULL");
 
-                    b.ToTable("OutboxMessage");
+                    b.ToTable("OutboxMessage", (string)null);
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.OutboxState", b =>
@@ -196,7 +196,29 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
 
                     b.HasIndex("BusName", "Created");
 
-                    b.ToTable("OutboxState");
+                    b.ToTable("OutboxState", (string)null);
+                });
+
+            modelBuilder.Entity("NINJA.EShop.Ordering.Application.Sagas.OrderProcessing.OrderProcessingState", b =>
+                {
+                    b.Property<Guid>("CorrelationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CurrentState")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CorrelationId");
+
+                    b.ToTable("OrderProcessingStates");
                 });
 
             modelBuilder.Entity("NINJA.EShop.Ordering.Domain.Models.Customer", b =>
@@ -231,7 +253,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("NINJA.EShop.Ordering.Domain.Models.Order", b =>
@@ -383,7 +405,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("NINJA.EShop.Ordering.Domain.Models.OrderItem", b =>
@@ -421,7 +443,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("NINJA.EShop.Ordering.Domain.Models.Product", b =>
@@ -451,7 +473,7 @@ namespace NINJA.EShop.Ordering.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.OutboxMessage", b =>

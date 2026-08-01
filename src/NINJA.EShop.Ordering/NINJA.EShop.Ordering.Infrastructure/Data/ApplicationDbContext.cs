@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using NINJA.EShop.Ordering.Application.Sagas.OrderProcessing;
 
 namespace NINJA.EShop.Ordering.Infrastructure.Data;
 
@@ -10,6 +11,7 @@ public class ApplicationDbContext: DbContext, IApplicationDbContext
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<OrderProcessingState> OrderProcessingStates => Set<OrderProcessingState>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -19,6 +21,13 @@ public class ApplicationDbContext: DbContext, IApplicationDbContext
         builder.AddInboxStateEntity();
         builder.AddOutboxMessageEntity();
         builder.AddOutboxStateEntity();
+
+        builder.Entity<OrderProcessingState>(entity =>
+        {
+            entity.HasKey(x => x.CorrelationId);
+            entity.Property(x => x.CurrentState).HasMaxLength(64);
+        });
+
         base.OnModelCreating(builder);
     }
 }

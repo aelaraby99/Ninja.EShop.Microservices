@@ -48,7 +48,7 @@ services:
     restart: always
 
   ninja.eshop.messagebroker:
-    image: rabbitmq:4-management
+    image: rabbitmq:4.0-management
     restart: always
 
 volumes:

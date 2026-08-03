@@ -11,7 +11,8 @@ public static class Extentions
     public static IServiceCollection AddMessageBroker(
         this IServiceCollection services,
         Assembly? consumersAssembly = null,
-        Action<IBusRegistrationConfigurator>? configureBus = null)
+        Action<IBusRegistrationConfigurator>? configureBus = null,
+        Action<IBusRegistrationContext,IRabbitMqBusFactoryConfigurator>? configureTransport = null)
     {
         services.AddOptions<RabbitMqOptions>()
             .BindConfiguration(RabbitMqOptions.SectionName)
@@ -49,6 +50,12 @@ public static class Extentions
                     cb.TripThreshold = 15;
                     cb.ResetInterval = TimeSpan.FromMinutes(1);
                 });
+
+                // Explicit exchange/queue topology (names, types, and hand-declared receive
+                // endpoints) for this service. Anything not explicitly bound above falls through
+                // to ConfigureEndpoints' auto-generated naming below.
+                configureTransport?.Invoke(context,cfg);
+
                 cfg.ConfigureEndpoints(context);
             });
         });

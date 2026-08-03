@@ -1,4 +1,5 @@
 ﻿using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Basket.API.Basket;
@@ -19,8 +20,10 @@ namespace NINJA.EShop.Basket.API
             ApplicationServices(builder);
             DataServices(builder,redisDbConStr,martenDbConStr);
             CrossCuttingServices(builder,redisDbConStr,martenDbConStr);
-            // RabbitMQ/MassTransit bus (no consumers assembly: Basket only publishes BasketCheckoutEvent)
-            builder.Services.AddMessageBroker();
+            // RabbitMQ/MassTransit bus (no consumers assembly: Basket only publishes BasketCheckoutEvent).
+            // Still declares the shared topology so its publish-side exchange name/type match what
+            // Ordering's consumer expects - names must agree across services touching a message.
+            builder.Services.AddMessageBroker(configureTransport: (_,cfg) => MessageTopology.Configure(cfg));
             GrpcServices(builder);
             return builder;
         }

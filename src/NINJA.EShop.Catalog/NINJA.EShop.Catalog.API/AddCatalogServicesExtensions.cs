@@ -1,8 +1,10 @@
 ﻿using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.RateLimiting;
 using NINJA.EShop.Catalog.API.Data;
 using NINJA.EShop.Catalog.API.Products;
+using NINJA.EShop.Catalog.API.Products.StockReservation;
 using NINJA.EShop.Shared.Behaviors;
 using NINJA.EShop.Shared.Exceptions.Handler;
 using NINJA.EShop.Shared.Messaging.MassTransit;
@@ -22,7 +24,17 @@ namespace NINJA.EShop.Catalog.API
                 cfg.WithModule<ProductEndpoints>();
             });
             // RabbitMQ/MassTransit bus + consumers discovered from this assembly (no outbox here, Catalog only consumes)
-            builder.Services.AddMessageBroker(programAssembly);
+            builder.Services.AddMessageBroker(programAssembly,configureTransport: (context,cfg) =>
+            {
+                // Exchange names/types shared with every other service touching these messages.
+                MessageTopology.Configure(cfg);
+
+                // Explicit queue for the ReserveStock consumer (was auto-named "reserve-stock-consumer").
+                cfg.ReceiveEndpoint("catalog.reserve-stock",e =>
+                {
+                    e.ConfigureConsumer<ReserveStockConsumer>(context);
+                });
+            });
             var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
             // Marten (Postgres document store) as the Catalog read/write store
             builder.Services.AddMarten(options =>

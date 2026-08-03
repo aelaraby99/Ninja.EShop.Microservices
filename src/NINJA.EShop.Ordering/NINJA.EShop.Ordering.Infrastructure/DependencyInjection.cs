@@ -9,6 +9,9 @@ namespace NINJA.EShop.Ordering.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("OrderingDb");
+            // Order matters: EF invokes SavingChanges(Async) interceptors in registration order, and
+            // domain events (dispatched below) should see the audit fields already stamped on the
+            // aggregate. Keep AuditableEntityInterceptor registered before DispatchDomainEventsInterceptor.
             // Stamps CreatedAt/CreatedBy/LastModified(By) on IEntity rows as they're saved
             services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
             // Publishes an aggregate's queued domain events via MediatR during SaveChanges

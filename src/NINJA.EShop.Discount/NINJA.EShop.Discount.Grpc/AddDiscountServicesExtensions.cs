@@ -8,10 +8,12 @@ public static class AddDiscountServicesExtensions
 {
     public static WebApplicationBuilder AddDiscountServices(this WebApplicationBuilder builder)
     {
+        // gRPC server support, needed to MapGrpcService<DiscountService> below
         builder.Services.AddGrpc();
         string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException(
                 "Connection string 'DefaultConnection' was not found.");
+        // SQLite-backed DiscountContext, auto-migrated on startup via AutoMigrateDatabase below
         builder.Services.AddDbContext<DiscountContext>(options =>
         {
             options.UseSqlite(connectionString);

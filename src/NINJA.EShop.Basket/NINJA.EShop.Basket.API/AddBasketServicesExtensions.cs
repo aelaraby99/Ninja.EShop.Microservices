@@ -19,6 +19,7 @@ namespace NINJA.EShop.Basket.API
             ApplicationServices(builder);
             DataServices(builder,redisDbConStr,martenDbConStr);
             CrossCuttingServices(builder,redisDbConStr,martenDbConStr);
+            // RabbitMQ/MassTransit bus (no consumers assembly: Basket only publishes BasketCheckoutEvent)
             builder.Services.AddMessageBroker();
             GrpcServices(builder);
             return builder;
@@ -45,6 +46,8 @@ namespace NINJA.EShop.Basket.API
 
         private static void GrpcServices(WebApplicationBuilder builder)
         {
+            // Discount gRPC client used synchronously from Checkout to price basket items.
+            // Dev only: skips TLS certificate validation for the local self-signed dev cert.
             var grpcClientBuilder = builder.Environment.IsDevelopment()
                 ? builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
                 {
@@ -77,7 +80,9 @@ namespace NINJA.EShop.Basket.API
 
         private static void CrossCuttingServices(WebApplicationBuilder builder,string redisDbConStr,string martenDbConStr)
         {
+            // Problem-details style exception handling middleware
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+            // /health endpoint checks both Redis (cache) and Postgres (Marten's backing store)
             builder.Services.AddHealthChecks()
                 .AddRedis(redisDbConStr,name: "Redis")
                 .AddNpgSql(martenDbConStr,name: "Postgres");
@@ -85,6 +90,7 @@ namespace NINJA.EShop.Basket.API
 
         private static void DataServices(WebApplicationBuilder builder,string redisDbConStr,string martenDbConStr)
         {
+            // Marten (Postgres document store) as the ShoppingCart backing store, keyed by UserName
             builder.Services.AddMarten(options =>
             {
                 options.Connection(martenDbConStr);
@@ -98,6 +104,7 @@ namespace NINJA.EShop.Basket.API
             ///});
             builder.Services.AddScoped<IBasketRepository,BasketRepository>();
             builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
+            // Redis-backed IDistributedCache, used by CacheBasketRepository above
             builder.Services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = redisDbConStr;
@@ -107,12 +114,9 @@ namespace NINJA.EShop.Basket.API
         private static void ApplicationServices(WebApplicationBuilder builder)
         {
             var programAssembly = typeof(Program).Assembly;
-            builder.Services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(programAssembly);
-                cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
-                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
+            // MediatR handlers + validation/logging behaviors + FluentValidation validators for this assembly
+            builder.Services.AddSharedMediatR(programAssembly);
+            // Carter modules exposing the Basket and Checkout minimal-API endpoints
             builder.Services.AddCarter(configurator: cfg =>
             {
                 cfg.WithModule<BasketEndpoints>();
@@ -120,9 +124,12 @@ namespace NINJA.EShop.Basket.API
             });
             if (builder.Environment.IsDevelopment())
             {
+                // Swagger/OpenAPI generation (dev only, paired with UseSwagger/UseSwaggerUI below)
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
             }
+            // Demo rate-limiter policy: not currently applied to any endpoint via RequireRateLimiting.
+            // Intentionally left as-is for now; rate limiting is planned to move to the gateway later.
             builder.Services.AddRateLimiter(options =>
            {
                // Default policy

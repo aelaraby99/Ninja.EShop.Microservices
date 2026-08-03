@@ -14,23 +14,22 @@ namespace NINJA.EShop.Catalog.API
         {
 
             var programAssembly = typeof(Program).Assembly;
-            builder.Services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(programAssembly);
-                cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
-                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
-            builder.Services.AddValidatorsFromAssembly(programAssembly);
+            // MediatR handlers + validation/logging behaviors + FluentValidation validators for this assembly
+            builder.Services.AddSharedMediatR(programAssembly);
+            // Carter module exposing the Product minimal-API endpoints
             builder.Services.AddCarter(configurator: cfg =>
             {
                 cfg.WithModule<ProductEndpoints>();
             });
+            // RabbitMQ/MassTransit bus + consumers discovered from this assembly (no outbox here, Catalog only consumes)
             builder.Services.AddMessageBroker(programAssembly);
             var martenDbConStr = builder.Configuration.GetConnectionString("MartenDb")!;
+            // Marten (Postgres document store) as the Catalog read/write store
             builder.Services.AddMarten(options =>
             {
                 options.Connection(martenDbConStr);
             }).UseLightweightSessions();
+            // Endpoint-level rate limiting policies, applied via .RequireRateLimiting(...) on ProductEndpoints
             builder.Services.AddRateLimiter(options =>
             {
                 // Default policy
@@ -50,11 +49,15 @@ namespace NINJA.EShop.Catalog.API
             });
             if (builder.Environment.IsDevelopment())
             {
+                // Seeds Marten with CatalogInitialData on startup (dev only)
                 builder.Services.InitializeMartenWith<CatalogInitialData>();
+                // Swagger/OpenAPI generation (dev only, paired with UseSwagger/UseSwaggerUI below)
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
             }
+            // Problem-details style exception handling middleware
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+            // /health endpoint checks Postgres (Marten's backing store) connectivity
             builder.Services.AddHealthChecks().AddNpgSql(martenDbConStr);
             return builder;
         }

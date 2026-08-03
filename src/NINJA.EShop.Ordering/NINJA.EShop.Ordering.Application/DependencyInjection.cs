@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NINJA.EShop.Shared.Behaviors;
 using System.Reflection;
 namespace NINJA.EShop.Ordering.Application
@@ -8,12 +7,8 @@ namespace NINJA.EShop.Ordering.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                cfg.AddOpenBehavior(typeof(ValidationBehaviors<,>));
-                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
+            // MediatR handlers + validation/logging behaviors + FluentValidation validators for this assembly
+            services.AddSharedMediatR(Assembly.GetExecutingAssembly());
             // Message broker (consumers + saga) is registered in Infrastructure, where the
             // EF Core outbox/inbox needs ApplicationDbContext.
             return services;

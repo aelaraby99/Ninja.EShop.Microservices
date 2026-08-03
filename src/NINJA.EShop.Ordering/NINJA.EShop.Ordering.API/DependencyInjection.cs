@@ -8,8 +8,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddOrderingApiServices(this IServiceCollection services,IConfiguration configuration)
     {
+        // Carter module discovery for the minimal-API endpoints (Orders, etc.)
         services.AddCarter();
+        // Problem-details style exception handling middleware
         services.AddExceptionHandler<CustomExceptionHandler>();
+        // /health endpoint checks SQL Server (OrderingDb) connectivity
         services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("OrderingDb")!);
         return services;
     }

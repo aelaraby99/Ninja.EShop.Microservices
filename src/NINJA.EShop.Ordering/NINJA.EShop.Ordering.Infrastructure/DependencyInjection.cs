@@ -1,6 +1,5 @@
 ﻿using MassTransit;
 using NINJA.EShop.Ordering.Application.Orders.EventHandlers.Integration;
-using NINJA.EShop.Ordering.Application.Sagas.OrderProcessing;
 using NINJA.EShop.Shared.Messaging.MassTransit;
 
 namespace NINJA.EShop.Ordering.Infrastructure
@@ -35,13 +34,6 @@ namespace NINJA.EShop.Ordering.Infrastructure
                 {
                     cfg.UseEntityFrameworkOutbox<ApplicationDbContext>(context);
                 });
-
-                bus.AddSagaStateMachine<OrderProcessingStateMachine,OrderProcessingState>()
-                    .EntityFrameworkRepository(r =>
-                    {
-                        r.ExistingDbContext<ApplicationDbContext>();
-                        r.UseSqlServer();
-                    });
             });
 
             return services;

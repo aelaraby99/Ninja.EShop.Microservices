@@ -49,8 +49,6 @@ public static class Extentions
                     cb.TripThreshold = 15;
                     cb.ResetInterval = TimeSpan.FromMinutes(1);
                 });
-
-                cfg.UseInMemoryOutbox(context);
                 cfg.ConfigureEndpoints(context);
             });
         });

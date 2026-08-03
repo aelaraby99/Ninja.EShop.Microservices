@@ -16,7 +16,8 @@ namespace NINJA.EShop.Ordering.Infrastructure
                 options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseSqlServer(connectionString);
             });
-            services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
+            services.AddScoped<IApplicationDbContext>(sp =>
+            sp.GetRequiredService<ApplicationDbContext>());
 
             services.AddMessageBroker(typeof(BasketCheckoutEventHandler).Assembly,bus =>
             {

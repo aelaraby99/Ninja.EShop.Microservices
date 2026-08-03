@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/NINJA.EShop.Discount/NINJA.EShop.Discount.Grpc/NinjaEShopDiscountDb-wal
+/src/NINJA.EShop.Discount/NINJA.EShop.Discount.Grpc/NinjaEShopDiscountDb-shm
+/src/NINJA.EShop.Discount/NINJA.EShop.Discount.Grpc/NinjaEShopDiscountDb

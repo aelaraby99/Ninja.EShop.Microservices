@@ -51,6 +51,12 @@ services:
     image: rabbitmq:4.0-management
     restart: always
 
+  ninja.eshop.yarpapigateway:
+    image: ${DOCKER_REGISTRY-}ninjaeshopyarpapigateway
+    build:
+      context: .
+      dockerfile: src/NINJA.EShop.APIGateway/NINJA.EShop.YARPApiGateway/Dockerfile
+
 volumes:
   postgres_catalog:
   postgres_basket:

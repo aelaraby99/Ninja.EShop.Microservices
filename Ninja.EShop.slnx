@@ -13,6 +13,9 @@
     <Project Path="src/NINJA.EShop.Shared/NINJA.EShop.Shared/NINJA.EShop.Shared.csproj" Id="f8237c26-1a83-46e3-be25-2727842bd530" />
   </Folder>
   <Folder Name="/src/" />
+  <Folder Name="/src/NINJA.EShop.APIGateway/">
+    <Project Path="src/NINJA.EShop.APIGateway/NINJA.EShop.YARPApiGateway/NINJA.EShop.YARPApiGateway.csproj" Id="8e984c5e-350f-4b44-92d1-05893d47b589" />
+  </Folder>
   <Folder Name="/src/NINJA.EShop.Basket/">
     <Project Path="src/NINJA.EShop.Basket/NINJA.EShop.Basket.API/NINJA.EShop.Basket.API.csproj" Id="3194027c-d08f-4087-86dc-0355721525a3" />
   </Folder>

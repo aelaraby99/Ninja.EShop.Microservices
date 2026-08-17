@@ -158,6 +158,7 @@ services:
       - redisinsight_data:/data
 
   ninja.eshop.yarpapigateway:
+    container_name : ninja.eshop.yarpapigateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -165,7 +166,7 @@ services:
     depends_on:
       - ninja.eshop.ordering.api
       - ninja.eshop.catalog.api
-      - ninja.eshop.basket.api 
+      - ninja.eshop.basket.api
     ports:
       - "6004:8080"
       - "6064:8081"

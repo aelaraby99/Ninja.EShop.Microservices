@@ -35,7 +35,6 @@ namespace NINJA.EShop.Basket.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseHttpsRedirection();
             app.UseRateLimiter();
             app.MapCarter();
             app.UseExceptionHandler(options => { });

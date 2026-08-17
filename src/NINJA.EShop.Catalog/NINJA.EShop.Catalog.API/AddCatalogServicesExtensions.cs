@@ -80,7 +80,6 @@ namespace NINJA.EShop.Catalog.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseHttpsRedirection();
             app.UseRateLimiter();
             app.MapCarter();
             app.UseExceptionHandler(options => { });

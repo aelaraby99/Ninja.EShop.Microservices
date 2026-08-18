@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/src/NINJA.EShop.Clients/">
+    <Project Path="src/NINJA.EShop.Clients/NINJA.EShop.RazorClient/NINJA.EShop.RazorClient.csproj" Id="5796ddad-2368-4d9f-869b-a2813803e575" />
+  </Folder>
   <Folder Name="/src/NINJA.EShop.Discount/">
     <Project Path="src/NINJA.EShop.Discount/NINJA.EShop.Discount.Grpc/NINJA.EShop.Discount.Grpc.csproj" Id="165ef59b-3512-4502-93e5-b58e8889127e" />
   </Folder>

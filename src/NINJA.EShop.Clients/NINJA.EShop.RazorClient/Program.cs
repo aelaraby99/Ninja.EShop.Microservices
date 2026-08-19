@@ -1,3 +1,5 @@
+using NINJA.EShop.RazorClient.Services;
+
 namespace NINJA.EShop.RazorClient;
 
 public class Program
@@ -8,6 +10,17 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+
+        Uri gatewayAddress = new(builder.Configuration["ApiSettings:GatewayAddress"]!);
+        builder.Services
+            .AddRefitClient<IOrderingService>()
+            .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
+        builder.Services
+            .AddRefitClient<IBasketService>()
+            .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
+        builder.Services
+            .AddRefitClient<ICatalogService>()
+            .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
 
         var app = builder.Build();
 

@@ -57,6 +57,13 @@ services:
       context: .
       dockerfile: src/NINJA.EShop.APIGateway/NINJA.EShop.YARPApiGateway/Dockerfile
 
+  ninja.eshop.razorclient:
+    image: ${DOCKER_REGISTRY-}ninjaeshoprazorclient
+    build:
+      context: .
+      dockerfile: src/NINJA.EShop.Clients/NINJA.EShop.RazorClient/Dockerfile
+
 volumes:
   postgres_catalog:
   postgres_basket:
+

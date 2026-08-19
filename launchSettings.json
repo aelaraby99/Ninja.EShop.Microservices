@@ -7,7 +7,8 @@
         "ninja.eshop.catalog.api": "StartDebugging",
         "ninja.eshop.basket.api": "StartDebugging",
         "ninja.eshop.ordering.api": "StartDebugging",
-        "ninja.eshop.yarpapigateway": "StartDebugging"
+        "ninja.eshop.yarpapigateway": "StartDebugging",
+        "ninja.eshop.razorclient": "StartDebugging"
       }
     }
   }

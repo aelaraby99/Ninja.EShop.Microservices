@@ -18,18 +18,25 @@ public interface IBasketService
     {
         // Get Basket If Not Exist Create New Basket with Default Logged In User Name: swn
         var userName = "swn";
+        // assumption customerId is passed in from the UI authenticated user swn
+        var customerId = new Guid("58c49479-ec65-4de2-86e7-033c546291aa");
         ShoppingCartModel basket;
 
         try
         {
             var getBasketResponse = await GetBasket(userName);
             basket = getBasketResponse.Cart;
+            if (basket.CustomerId == Guid.Empty)
+            {
+                basket.CustomerId = customerId;
+            }
         }
         catch (ApiException apiException) when (apiException.StatusCode == HttpStatusCode.NotFound)
         {
             basket = new ShoppingCartModel
             {
                 UserName = userName,
+                CustomerId = customerId,
                 Items = []
             };
         }

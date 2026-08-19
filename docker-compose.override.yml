@@ -180,7 +180,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ApiSettings__GatewayAddress=https://ninja.eshop.yarpapigateway:8081
+      - ApiSettings__GatewayAddress=http://ninja.eshop.yarpapigateway:8080
     ports:
       - "6005:8080"
       - "6065:8081"

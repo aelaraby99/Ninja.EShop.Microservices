@@ -13,13 +13,15 @@ public class Program
 
         Uri gatewayAddress = new(builder.Configuration["ApiSettings:GatewayAddress"]!);
         builder.Services
-            .AddRefitClient<IOrderingService>()
+            .AddRefitGeneratedClient<IOrderingService>()
             .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
+
         builder.Services
-            .AddRefitClient<IBasketService>()
+            .AddRefitGeneratedClient<IBasketService>()
             .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
+
         builder.Services
-            .AddRefitClient<ICatalogService>()
+            .AddRefitGeneratedClient<ICatalogService>()
             .ConfigureHttpClient(client => client.BaseAddress = gatewayAddress);
 
         var app = builder.Build();
